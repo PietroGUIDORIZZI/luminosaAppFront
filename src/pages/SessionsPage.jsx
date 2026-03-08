@@ -9,23 +9,7 @@ export function SessionsPage({ preSelectedTaskId }) {
   const { sessions, stats, load, create, complete, remove } = useSessions();
   const { tasks, load: loadTasks } = useTasks();
 
-  useEffect(() => {
-    load();
-    loadTasks();
-  }, []);
-
-  const handleSessionStart = async (durationMinutes, taskId) => {
-    const session = await create(durationMinutes, taskId);
-    return session;
-  };
-
-  const handleSessionComplete = async (sessionId) => {
-    await complete(sessionId);
-  };
-
-  const handleSessionCancel = async (sessionId) => {
-    await remove(sessionId);
-  };
+  useEffect(() => { load(); loadTasks(); }, []);
 
   return (
     <div className="page">
@@ -35,9 +19,9 @@ export function SessionsPage({ preSelectedTaskId }) {
       <PomodoroTimer
         tasks={tasks}
         preSelectedTaskId={preSelectedTaskId}
-        onSessionStart={handleSessionStart}
-        onSessionComplete={handleSessionComplete}
-        onSessionCancel={handleSessionCancel}
+        onSessionStart={(durationMinutes, taskId) => create(durationMinutes, taskId)}
+        onSessionComplete={(sessionId, durationMinutes) => complete(sessionId, durationMinutes)}
+        onSessionCancel={(sessionId) => remove(sessionId)}
       />
 
       <SessionStats stats={stats} />
