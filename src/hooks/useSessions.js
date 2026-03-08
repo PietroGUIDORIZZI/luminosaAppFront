@@ -37,7 +37,6 @@ export function useSessions() {
     }
   }, [load, toast]);
 
-  // durationMinutes = tempo real decorrido passado pelo PomodoroTimer
   const complete = useCallback(async (id, durationMinutes) => {
     try {
       await sessionsApi.complete(id, durationMinutes);
@@ -62,7 +61,7 @@ export function useSessions() {
     const total     = sessions.length;
     const completed = sessions.filter(s => s.completed).length;
     const totalMins = sessions.reduce((a, s) => a + (s.durationMinutes || 25), 0);
-    return { total, completed, hours: (totalMins / 60).toFixed(1) };
+    return { total, completed, totalMins };
   }, [sessions]);
 
   const lastIncomplete = useMemo(

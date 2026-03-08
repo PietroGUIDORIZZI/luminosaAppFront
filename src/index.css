@@ -89,11 +89,13 @@ a { color: inherit; text-decoration: none; }
 .nav-tab.active { background: var(--primary); color: #fff; box-shadow: var(--glow); }
 .nav-right { display: flex; gap: 8px; align-items: center; }
 .icon-btn {
-  padding: 7px; border-radius: 8px; border: none;
-  background: var(--border); color: var(--text); font-size: 1rem;
+  padding: 7px; border-radius: 8px; border: 1.5px solid var(--border);
+  background: var(--surface); color: var(--text); font-size: 1rem;
   display: flex; align-items: center; justify-content: center;
 }
-.icon-btn:hover { background: var(--primary); color: #fff; }
+.icon-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+[data-theme="dark"] .icon-btn { background: var(--surface); color: var(--text); border-color: var(--border); }
+[data-theme="dark"] .icon-btn:hover { background: var(--primary); color: #fff; }
 
 /* ── LAYOUT ─────────────────────────────────── */
 .page { max-width: 960px; margin: 0 auto; padding: 32px 20px 80px; }
@@ -321,71 +323,17 @@ a { color: inherit; text-decoration: none; }
 /* ── MOBILE NAV ─────────────────────────────── */
 @media (max-width: 600px) {
   .nav-tabs { display: none; }
-
   .mobile-nav {
     display: flex; position: fixed; bottom: 0; left: 0; right: 0;
     background: var(--surface); border-top: 1px solid var(--border);
     z-index: 99;
-    /* safe area para iPhones com notch/home bar */
-    padding-bottom: env(safe-area-inset-bottom);
   }
   .mobile-nav-btn {
     flex: 1; padding: 10px 4px; border: none; background: transparent;
     color: var(--muted); font-size: .65rem; font-weight: 600;
     display: flex; flex-direction: column; align-items: center; gap: 3px;
-    /* área de toque mínima recomendada */
-    min-height: 52px;
   }
   .mobile-nav-btn.active { color: var(--primary); }
-  .mobile-nav-btn span { font-size: 1.3rem; }
-
-  /* Toast sobe para não colidir com mobile-nav */
-  .toast-container { bottom: 80px; right: 12px; left: 12px; }
-  .toast { max-width: 100%; }
-
-  /* Page com padding extra no bottom por causa da nav fixa */
-  .page { padding: 20px 16px 100px; }
-  .page-title { font-size: 1.4rem; }
-  .page-sub   { font-size: .82rem; margin-bottom: 16px; }
-
-  /* Form: 1 coluna em mobile */
-  .form-grid { grid-template-columns: 1fr; }
-
-  /* Inputs com font-size 16px para evitar zoom automático no iOS */
-  input, select, textarea { font-size: 16px; }
-
-  /* Stats: mínimo menor para caber 2 por linha em telas pequenas */
-  .stats-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 16px; }
-  .stat-value { font-size: 1.4rem; }
-
-  /* Timer: botões quebram em 2 linhas se necessário */
-  .timer-controls { flex-wrap: wrap; gap: 8px; }
-  .timer-controls .btn { flex: 1 1 calc(50% - 8px); justify-content: center; }
-  .timer-display { font-size: 2.2rem; }
-
-  /* Item: ações empilham em tela pequena */
-  .item { gap: 10px; padding: 12px; }
-  .item-actions { flex-wrap: wrap; gap: 4px; }
-  .item-title { font-size: .85rem; }
-
-  /* Filtros chips com scroll horizontal */
-  .filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
-  .filter-chip { white-space: nowrap; flex-shrink: 0; }
-
-  /* Search + sort empilham */
-  .filters-top { flex-direction: column; }
-  .sort-box { width: 100%; }
-  .sort-select { width: 100%; }
-  .search-box { width: 100%; }
+  .mobile-nav-btn span { font-size: 1.1rem; }
 }
 @media (min-width: 601px) { .mobile-nav { display: none; } }
-
-/* ── TASK ITEM — botão Focar responsivo ─────── */
-/* Desktop: aparece nas ações à direita */
-.focar-desktop { display: inline-flex; }
-
-/* Mobile: some das ações e aparece embaixo do título */
-@media (max-width: 600px) {
-  .focar-desktop { display: none !important; }
-  button[data-focar="true"] { display: inline-flex !important; }
-}
