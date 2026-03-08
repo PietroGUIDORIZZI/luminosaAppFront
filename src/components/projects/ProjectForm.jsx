@@ -84,14 +84,14 @@ export function ProjectForm({ editing, onSave, onCancel }) {
                   border: '2px solid',
                   borderColor: form.icon === emoji ? 'var(--primary, #6366f1)' : 'var(--border, #e5e7eb)',
                   borderRadius: 8,
-                  background: form.icon === emoji ? 'var(--primary-light, #ede9fe)' : 'transparent',
+                  background: form.icon === emoji ? 'var(--primary, #6366f1)' : 'transparent',
                   cursor: 'pointer',
                   transition: 'all .15s',
                   textAlign: 'left',
                 }}
               >
                 <span style={{ fontSize: '1.3rem' }}>{emoji}</span>
-                <span style={{ color: 'var(--text, #111)', fontWeight: form.icon === emoji ? 600 : 400 }}>{label}</span>
+                <span style={{ color: form.icon === emoji ? '#fff' : 'var(--text, #111)', fontWeight: form.icon === emoji ? 600 : 400 }}>{label}</span>
               </button>
             ))}
           </div>

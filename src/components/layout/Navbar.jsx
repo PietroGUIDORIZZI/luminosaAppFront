@@ -3,7 +3,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { useApiStatus } from '../../hooks/useApiStatus';
 
 const TABS = [
-  { id: 'tasks',    label: '📝 Tarefas'    },
+  { id: 'tasks',    label: '✅ Tasks'    },
   { id: 'projects', label: '📁 Projetos' },
   { id: 'sessions', label: '🍅 Pomodoro' },
 ];
@@ -23,10 +23,8 @@ export function Navbar({ activePage, onNavigate }) {
   return (
     <nav className="nav">
       <div className="nav-inner">
-        <div className="logo">
-          ✨ Luminosa
-          <small>{clock}</small>
-        </div>
+
+        <div className="logo">Luminosa</div>
 
         <div className="nav-tabs">
           {TABS.map(tab => (
@@ -41,6 +39,7 @@ export function Navbar({ activePage, onNavigate }) {
         </div>
 
         <div className="nav-right">
+          <div className="nav-clock">{clock}</div>
           <div className="api-status">
             <div className={`status-dot${online === true ? ' online' : online === false ? ' offline' : ''}`} />
             <span style={{ color: 'var(--muted)' }}>
@@ -49,6 +48,7 @@ export function Navbar({ activePage, onNavigate }) {
           </div>
           <button className="icon-btn" onClick={toggleTheme} title="Alternar tema">🌙</button>
         </div>
+
       </div>
     </nav>
   );
