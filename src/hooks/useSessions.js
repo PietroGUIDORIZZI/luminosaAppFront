@@ -1,8 +1,3 @@
-/**
- * HOOK — useSessions
- * Encapsula estado e operações de sessões Pomodoro.
- */
-
 import { useState, useCallback, useMemo } from 'react';
 import { sessionsApi } from '../api/sessionsApi';
 import { useToast } from '../context/ToastContext';
@@ -42,9 +37,10 @@ export function useSessions() {
     }
   }, [load, toast]);
 
-  const complete = useCallback(async (id) => {
+  // durationMinutes = tempo real decorrido passado pelo PomodoroTimer
+  const complete = useCallback(async (id, durationMinutes) => {
     try {
-      await sessionsApi.complete(id);
+      await sessionsApi.complete(id, durationMinutes);
       toast('Sessão concluída! ✅');
       await load();
     } catch {
