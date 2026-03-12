@@ -1,9 +1,3 @@
-/**
- * CAMADA DE API — cliente HTTP base
- * Token JWT injetado automaticamente em cada requisição.
- * 401/403 → limpa token e redireciona para /login.
- */
-
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
 function getToken() {
@@ -25,7 +19,7 @@ async function request(path, options = {}) {
 
   if (res.status === 401 || res.status === 403) {
     localStorage.removeItem('luminosa_token');
-    window.location.reload();
+    window.dispatchEvent(new Event('auth:logout'));
     return null;
   }
 
@@ -49,11 +43,7 @@ export const client = {
 
 export async function checkApiHealth() {
   try {
-    const token = getToken();
-    await fetch(`${BASE_URL}/projects`, {
-      signal: AbortSignal.timeout(2000),
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
+    await fetch(`${BASE_URL}/projects`, { signal: AbortSignal.timeout(2000) });
     return true;
   } catch {
     return false;

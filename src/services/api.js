@@ -1,10 +1,3 @@
-// src/services/api.js
-// ─────────────────────────────────────────────────────────────
-// Wrapper global de fetch.
-// Toda chamada à API passa por aqui — token é injetado
-// automaticamente e 401 redireciona para o login.
-// ─────────────────────────────────────────────────────────────
-
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 function getToken() {
@@ -17,6 +10,7 @@ export function saveToken(token) {
 
 export function clearToken() {
   localStorage.removeItem('luminosa_token');
+  window.dispatchEvent(new Event('auth:logout'));
 }
 
 export function isAuthenticated() {
@@ -32,22 +26,17 @@ async function request(path, options = {}) {
     ...options.headers,
   };
 
-  const response = await fetch(`${BASE_URL}${path}`, {
-    ...options,
-    headers,
-  });
+  const response = await fetch(`${BASE_URL}${path}`, { ...options, headers });
 
-  // Token expirado ou inválido → limpa e redireciona para login
   if (response.status === 401 || response.status === 403) {
-    clearToken();
-    window.location.reload();
-    return;
+    localStorage.removeItem('luminosa_token');
+    window.dispatchEvent(new Event('auth:logout'));
+    return null;
   }
 
   return response;
 }
 
-// ── Métodos de conveniência ───────────────────────────────────
 export const api = {
   get:    (path)         => request(path),
   post:   (path, body)   => request(path, { method: 'POST',   body: JSON.stringify(body) }),
@@ -56,7 +45,6 @@ export const api = {
   delete: (path)         => request(path, { method: 'DELETE' }),
 };
 
-// ── Auth ──────────────────────────────────────────────────────
 export const authApi = {
   register: (email, password) =>
     fetch(`${BASE_URL}/api/auth/register`, {

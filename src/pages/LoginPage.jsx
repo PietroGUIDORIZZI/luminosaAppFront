@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import './LoginPage.css';
 
-export function LoginPage() {
+export function LoginPage({ onSuccess }) {
   const [mode, setMode]         = useState('login');
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
@@ -14,7 +14,7 @@ export function LoginPage() {
       ? await login(email, password)
       : await register(email, password);
 
-    if (success) window.location.reload();
+    if (success && onSuccess) onSuccess();
   }
 
   return (

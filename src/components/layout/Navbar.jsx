@@ -8,12 +8,7 @@ const TABS = [
   { id: 'sessions', label: '🍅 Pomodoro' },
 ];
 
-function handleLogout() {
-  localStorage.removeItem('luminosa_token');
-  window.location.reload();
-}
-
-export function Navbar({ activePage, onNavigate }) {
+export function Navbar({ activePage, onNavigate, onLogout }) {
   const { toggleTheme } = useTheme();
   const online = useApiStatus();
   const [clock, setClock] = useState('');
@@ -28,9 +23,7 @@ export function Navbar({ activePage, onNavigate }) {
   return (
     <nav className="nav">
       <div className="nav-inner">
-
         <div className="logo">Luminosa</div>
-
         <div className="nav-tabs">
           {TABS.map(tab => (
             <button
@@ -42,7 +35,6 @@ export function Navbar({ activePage, onNavigate }) {
             </button>
           ))}
         </div>
-
         <div className="nav-right">
           <div className="nav-clock">{clock}</div>
           <div className="api-status">
@@ -54,14 +46,13 @@ export function Navbar({ activePage, onNavigate }) {
           <button className="icon-btn" onClick={toggleTheme} title="Alternar tema">🌙</button>
           <button
             className="icon-btn"
-            onClick={handleLogout}
+            onClick={onLogout}
             title="Sair"
             style={{ color: 'var(--muted)', fontSize: '13px' }}
           >
             Sair
           </button>
         </div>
-
       </div>
     </nav>
   );

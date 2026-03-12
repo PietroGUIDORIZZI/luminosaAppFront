@@ -1,6 +1,5 @@
-// src/hooks/useAuth.js
 import { useState } from 'react';
-import { authApi, saveToken, clearToken, isAuthenticated } from '../services/api';
+import { authApi, saveToken } from '../services/api';
 
 export function useAuth() {
   const [loading, setLoading] = useState(false);
@@ -14,7 +13,7 @@ export function useAuth() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message || 'Erro ao fazer login');
+        setError(data.message || 'Email ou senha incorretos');
         return false;
       }
 
@@ -50,10 +49,5 @@ export function useAuth() {
     }
   }
 
-  function logout() {
-    clearToken();
-    window.location.reload();
-  }
-
-  return { login, register, logout, loading, error, isAuthenticated };
+  return { login, register, loading, error };
 }
