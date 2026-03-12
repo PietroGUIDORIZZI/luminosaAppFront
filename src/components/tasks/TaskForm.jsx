@@ -22,33 +22,35 @@ export function TaskForm({ editing, projects, onSave, onCancel }) {
 
   const handleSave = () => {
     if (!form.title.trim()) return;
-    const payload = {
+    onSave({
       title:         form.title.trim(),
       status:        form.status,
       priority:      form.priority,
       pomodorosGoal: parseInt(form.pomodorosGoal) || 4,
       project:       form.projectId ? { id: parseInt(form.projectId) } : null,
-    };
-    onSave(payload, editing?.id);
+    }, editing?.id);
   };
 
   return (
     <div className="form-card">
       <div className="section-title">📝 {editing ? 'Editar Task' : 'Nova Task'}</div>
       <div className="form-grid">
+
         <div className="form-row" style={{ gridColumn: '1/-1' }}>
-          <label>Título</label>
-          <input value={form.title} onChange={set('title')} placeholder="Ex: Estudar React por 1 hora" />
+          <label htmlFor="task-title">Título</label>
+          <input id="task-title" value={form.title} onChange={set('title')} placeholder="Ex: Estudar React por 1 hora" />
         </div>
+
         <div className="form-row">
-          <label>Projeto</label>
-          <select value={form.projectId} onChange={set('projectId')}>
+          <label htmlFor="task-project">Projeto</label>
+          <select id="task-project" value={form.projectId} onChange={set('projectId')}>
             <option value="">Sem projeto</option>
             {projects.map(p => (
-              <option key={p.id} value={String(p.id)}>{p.icon || '📁'} {p.name}</option>
+              <option key={p.id} value={String(p.id)}>{p.emoji || p.icon || '📁'} {p.name}</option>
             ))}
           </select>
         </div>
+
         <div className="form-row" style={{ gridColumn: '1/-1' }}>
           <label>Status</label>
           <div style={{ display: 'flex', gap: 8, marginTop: 6 }}>
@@ -62,17 +64,13 @@ export function TaskForm({ editing, projects, onSave, onCancel }) {
                 type="button"
                 onClick={() => setForm(prev => ({ ...prev, status: value }))}
                 style={{
-                  flex: 1,
-                  padding: '8px 0',
-                  border: '2px solid',
+                  flex: 1, padding: '8px 0', border: '2px solid',
                   borderColor: form.status === value ? 'var(--primary, #6366f1)' : 'var(--border, #e5e7eb)',
                   borderRadius: 8,
                   background: form.status === value ? 'var(--primary-light, #ede9fe)' : 'transparent',
                   color: form.status === value ? 'var(--primary, #6366f1)' : 'var(--text, #111)',
                   fontWeight: form.status === value ? 700 : 400,
-                  cursor: 'pointer',
-                  fontSize: '.85rem',
-                  transition: 'all .15s',
+                  cursor: 'pointer', fontSize: '.85rem', transition: 'all .15s',
                 }}
               >
                 {label}
@@ -80,18 +78,21 @@ export function TaskForm({ editing, projects, onSave, onCancel }) {
             ))}
           </div>
         </div>
+
         <div className="form-row">
-          <label>Prioridade</label>
-          <select value={form.priority} onChange={set('priority')}>
+          <label htmlFor="task-priority">Prioridade</label>
+          <select id="task-priority" value={form.priority} onChange={set('priority')}>
             <option value="LOW">🟢 Baixa</option>
             <option value="MEDIUM">🟡 Média</option>
             <option value="HIGH">🔴 Alta</option>
           </select>
         </div>
+
         <div className="form-row">
-          <label>Meta de Pomodoros</label>
-          <input type="number" value={form.pomodorosGoal} onChange={set('pomodorosGoal')} min={1} max={20} />
+          <label htmlFor="task-pomodoros">Meta de Pomodoros</label>
+          <input id="task-pomodoros" type="number" value={form.pomodorosGoal} onChange={set('pomodorosGoal')} min={1} max={20} />
         </div>
+
       </div>
       <div className="form-actions">
         <button className="btn btn-primary" onClick={handleSave}>💾 Salvar</button>

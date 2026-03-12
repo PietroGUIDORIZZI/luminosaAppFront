@@ -29,7 +29,6 @@ const EMOJI_OPTIONS = [
   { emoji: '🗓️', label: 'Planejamento' },
 ];
 
-// projectsFlat = lista plana de todos os projetos para o seletor de pai
 export function ProjectForm({ editing, onSave, onCancel, projectsFlat = [], defaultParentId = null }) {
   const [form, setForm] = useState(EMPTY);
 
@@ -41,10 +40,7 @@ export function ProjectForm({ editing, onSave, onCancel, projectsFlat = [], defa
         parentId: editing.parentId != null ? String(editing.parentId) : '',
       });
     } else {
-      setForm({
-        ...EMPTY,
-        parentId: defaultParentId != null ? String(defaultParentId) : '',
-      });
+      setForm({ ...EMPTY, parentId: defaultParentId != null ? String(defaultParentId) : '' });
     }
   }, [editing, defaultParentId]);
 
@@ -60,41 +56,35 @@ export function ProjectForm({ editing, onSave, onCancel, projectsFlat = [], defa
     }, editing?.id);
   };
 
-  // Remove o próprio projeto da lista de possíveis pais (evita self-reference)
   const parentOptions = projectsFlat.filter(p => p.id !== editing?.id);
 
   return (
     <div className="form-card">
-      <div className="section-title">
-        📁 {editing ? 'Editar Projeto' : 'Novo Projeto'}
-      </div>
-
+      <div className="section-title">📁 {editing ? 'Editar Projeto' : 'Novo Projeto'}</div>
       <div className="form-grid">
+
         <div className="form-row" style={{ gridColumn: '1/-1' }}>
-          <label>Nome</label>
-          <input value={form.name} onChange={set('name')} placeholder="Ex: Site do Cliente" />
+          <label htmlFor="project-name">Nome</label>
+          <input id="project-name" value={form.name} onChange={set('name')} placeholder="Ex: Site do Cliente" />
         </div>
 
-        {/* Seletor de projeto pai */}
         <div className="form-row" style={{ gridColumn: '1/-1' }}>
-          <label>Projeto pai <span style={{ color: 'var(--muted)', fontWeight: 400 }}>(opcional)</span></label>
+          <label htmlFor="project-parent">
+            Projeto pai <span style={{ color: 'var(--muted)', fontWeight: 400 }}>(opcional)</span>
+          </label>
           <select
+            id="project-parent"
             value={form.parentId}
             onChange={set('parentId')}
             style={{
-              padding: '10px 12px',
-              borderRadius: 8,
+              padding: '10px 12px', borderRadius: 8,
               border: '1.5px solid var(--border)',
-              background: 'var(--card)',
-              color: 'var(--text)',
-              fontSize: '.9rem',
+              background: 'var(--card)', color: 'var(--text)', fontSize: '.9rem',
             }}
           >
             <option value="">— Nenhum (projeto raiz) —</option>
             {parentOptions.map(p => (
-              <option key={p.id} value={p.id}>
-                {p.emoji || '📁'} {p.name}
-              </option>
+              <option key={p.id} value={p.id}>{p.emoji || '📁'} {p.name}</option>
             ))}
           </select>
         </div>
@@ -109,8 +99,7 @@ export function ProjectForm({ editing, onSave, onCancel, projectsFlat = [], defa
                 onClick={() => setEmoji(emoji)}
                 style={{
                   display: 'flex', alignItems: 'center', gap: 10,
-                  padding: '8px 12px', fontSize: '.9rem',
-                  border: '2px solid',
+                  padding: '8px 12px', fontSize: '.9rem', border: '2px solid',
                   borderColor: form.emoji === emoji ? 'var(--primary, #6366f1)' : 'var(--border, #e5e7eb)',
                   borderRadius: 8,
                   background: form.emoji === emoji ? 'var(--primary, #6366f1)' : 'transparent',
@@ -123,8 +112,8 @@ export function ProjectForm({ editing, onSave, onCancel, projectsFlat = [], defa
             ))}
           </div>
         </div>
-      </div>
 
+      </div>
       <div className="form-actions">
         <button className="btn btn-primary" onClick={handleSave}>💾 Salvar</button>
         <button className="btn btn-ghost" onClick={onCancel}>Cancelar</button>

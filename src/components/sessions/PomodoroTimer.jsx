@@ -9,16 +9,15 @@ export function PomodoroTimer({ tasks, preSelectedTaskId, onSessionStart, onSess
   const [taskId, setTaskId] = useState(preSelectedTaskId ? String(preSelectedTaskId) : '');
   const [activeSessionId, setActiveSessionId] = useState(null);
 
-  // Calcula minutos decorridos a partir dos segundos restantes
   const elapsedMinutes = (secondsLeft) => {
     const elapsed = TOTAL_SECONDS - secondsLeft;
-    return Math.max(1, Math.round(elapsed / 60)); // mínimo 1 min
+    return Math.max(1, Math.round(elapsed / 60));
   };
 
   const handleFinish = async () => {
     toast('🎉 Pomodoro concluído! Hora de uma pausa.');
     if (activeSessionId) {
-      await onSessionComplete?.(activeSessionId, 25); // timer zerou = 25 min completos
+      await onSessionComplete?.(activeSessionId, 25);
       setActiveSessionId(null);
     }
   };
@@ -74,10 +73,11 @@ export function PomodoroTimer({ tasks, preSelectedTaskId, onSessionStart, onSess
       </div>
       <div className="timer-display">{display}</div>
       <div style={{ marginBottom: 8 }}>
-        <select value={taskId} onChange={handleTaskChange} style={{ maxWidth: 260, margin: '0 auto', display: 'block' }}>
+        <label htmlFor="pomodoro-task" style={{ display: 'none' }}>Task</label>
+        <select id="pomodoro-task" value={taskId} onChange={handleTaskChange} style={{ maxWidth: 260, margin: '0 auto', display: 'block' }}>
           <option value="">— Selecione uma task —</option>
           {tasks.map(t => (
-            <option key={t.id} value={String(t.id)}>{t.project?.icon || '🍅'} {t.title}</option>
+            <option key={t.id} value={String(t.id)}>{t.project?.emoji || t.project?.icon || '🍅'} {t.title}</option>
           ))}
         </select>
       </div>
