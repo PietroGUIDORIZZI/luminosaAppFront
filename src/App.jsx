@@ -1,18 +1,20 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useTheme }            from './context/ThemeContext';
-import { Navbar }              from './components/layout/Navbar';
-import { MobileNav }           from './components/layout/MobileNav';
-import { AnimatedBackground }  from './components/layout/AnimatedBackground';
-import { TasksPage }           from './pages/TasksPage';
-import { ProjectsPage }        from './pages/ProjectsPage';
-import { SessionsPage }        from './pages/SessionsPage';
-import { LoginPage }           from './pages/LoginPage';
-import { ProtectedRoute }      from './components/ProtectedRoute';
+import { useTheme }           from './context/ThemeContext';
+import { Navbar }             from './components/layout/Navbar';
+import { MobileNav }          from './components/layout/MobileNav';
+import { AnimatedBackground } from './components/layout/AnimatedBackground';
+import { TasksPage }          from './pages/TasksPage';
+import { ProjectsPage }       from './pages/ProjectsPage';
+import { SessionsPage }       from './pages/SessionsPage';
+import { LoginPage }          from './pages/LoginPage';
+
+function isAuthenticated() {
+  return !!localStorage.getItem('luminosa_token');
+}
 
 function AppInner() {
   const { dark } = useTheme();
-  const [activePage, setActivePage] = useState('tasks');
+  const [activePage, setActivePage]     = useState('tasks');
   const [selectedTaskId, setSelectedTaskId] = useState(null);
 
   const handleGoToPomodoro = (taskId) => {
@@ -38,24 +40,8 @@ function AppInner() {
 }
 
 export default function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        {/* Rota pública */}
-        <Route path="/login" element={<LoginPage />} />
-
-        {/* App protegido — exige token */}
-        <Route
-          path="/*"
-          element={
-            <ProtectedRoute>
-              <AppInner />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
-  );
+  if (!isAuthenticated()) {
+    return <LoginPage />;
+  }
+  return <AppInner />;
 }
