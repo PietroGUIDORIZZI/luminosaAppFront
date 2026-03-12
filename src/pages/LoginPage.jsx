@@ -26,7 +26,7 @@ export function LoginPage({ onSuccess }) {
           <span className="login-logo-text">Luminosa</span>
         </div>
 
-        <p className="login-tagline">foco é o produto.</p>
+        <p className="login-tagline">Seu Foco é o nosso produto.</p>
 
         <div className="login-tabs">
           <button
