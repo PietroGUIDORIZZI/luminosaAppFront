@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useTheme }            from './context/ThemeContext';
 import { Navbar }              from './components/layout/Navbar';
 import { MobileNav }           from './components/layout/MobileNav';
@@ -6,6 +7,8 @@ import { AnimatedBackground }  from './components/layout/AnimatedBackground';
 import { TasksPage }           from './pages/TasksPage';
 import { ProjectsPage }        from './pages/ProjectsPage';
 import { SessionsPage }        from './pages/SessionsPage';
+import { LoginPage }           from './pages/LoginPage';
+import { ProtectedRoute }      from './components/ProtectedRoute';
 
 function AppInner() {
   const { dark } = useTheme();
@@ -35,5 +38,24 @@ function AppInner() {
 }
 
 export default function App() {
-  return <AppInner />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Rota pública */}
+        <Route path="/login" element={<LoginPage />} />
+
+        {/* App protegido — exige token */}
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <AppInner />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }

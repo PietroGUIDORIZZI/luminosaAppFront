@@ -8,6 +8,11 @@ const TABS = [
   { id: 'sessions', label: '🍅 Pomodoro' },
 ];
 
+function handleLogout() {
+  localStorage.removeItem('luminosa_token');
+  window.location.href = '/login';
+}
+
 export function Navbar({ activePage, onNavigate }) {
   const { toggleTheme } = useTheme();
   const online = useApiStatus();
@@ -47,6 +52,14 @@ export function Navbar({ activePage, onNavigate }) {
             </span>
           </div>
           <button className="icon-btn" onClick={toggleTheme} title="Alternar tema">🌙</button>
+          <button
+            className="icon-btn"
+            onClick={handleLogout}
+            title="Sair"
+            style={{ color: 'var(--muted)', fontSize: '13px' }}
+          >
+            Sair
+          </button>
         </div>
 
       </div>
