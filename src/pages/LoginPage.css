@@ -110,7 +110,7 @@
 }
 
 .login-field input:focus {
-  border-color: var(--accent, #C8FF57);
+  border-color: var(--accent, #FBBF24);
 }
 
 .login-field input::placeholder {
@@ -132,7 +132,7 @@
 .login-submit {
   width: 100%;
   padding: 13px;
-  background: var(--accent, #C8FF57);
+  background: var(--accent, #FBBF24);
   color: #0C0C13;
   border: none;
   border-radius: 10px;
