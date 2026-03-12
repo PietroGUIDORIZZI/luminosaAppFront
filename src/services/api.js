@@ -40,7 +40,7 @@ async function request(path, options = {}) {
   // Token expirado ou inválido → limpa e redireciona para login
   if (response.status === 401 || response.status === 403) {
     clearToken();
-    window.location.href = '/login';
+    window.location.reload();
     return;
   }
 

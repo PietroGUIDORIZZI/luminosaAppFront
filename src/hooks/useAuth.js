@@ -52,7 +52,7 @@ export function useAuth() {
 
   function logout() {
     clearToken();
-    window.location.href = '/login';
+    window.location.reload();
   }
 
   return { login, register, logout, loading, error, isAuthenticated };

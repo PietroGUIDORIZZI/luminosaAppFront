@@ -25,7 +25,7 @@ async function request(path, options = {}) {
 
   if (res.status === 401 || res.status === 403) {
     localStorage.removeItem('luminosa_token');
-    window.location.href = '/login';
+    window.location.reload();
     return null;
   }
 

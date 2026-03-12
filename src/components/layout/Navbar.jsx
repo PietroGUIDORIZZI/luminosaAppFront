@@ -10,7 +10,7 @@ const TABS = [
 
 function handleLogout() {
   localStorage.removeItem('luminosa_token');
-  window.location.href = '/login';
+  window.location.reload();
 }
 
 export function Navbar({ activePage, onNavigate }) {
