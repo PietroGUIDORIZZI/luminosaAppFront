@@ -1,15 +1,12 @@
-// src/pages/LoginPage.jsx
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import './LoginPage.css';
 
 export function LoginPage() {
-  const [mode, setMode]         = useState('login'); // 'login' | 'register'
+  const [mode, setMode]         = useState('login');
   const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
   const { login, register, loading, error } = useAuth();
-  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -17,14 +14,13 @@ export function LoginPage() {
       ? await login(email, password)
       : await register(email, password);
 
-    if (success) navigate('/');
+    if (success) window.location.reload();
   }
 
   return (
     <div className="login-bg">
       <div className="login-card">
 
-        {/* Logo */}
         <div className="login-logo">
           <span className="login-logo-icon">🔦</span>
           <span className="login-logo-text">Luminosa</span>
@@ -32,7 +28,6 @@ export function LoginPage() {
 
         <p className="login-tagline">foco é o produto.</p>
 
-        {/* Tabs */}
         <div className="login-tabs">
           <button
             className={`login-tab ${mode === 'login' ? 'active' : ''}`}
@@ -50,7 +45,6 @@ export function LoginPage() {
           </button>
         </div>
 
-        {/* Form */}
         <form className="login-form" onSubmit={handleSubmit}>
           <div className="login-field">
             <label htmlFor="email">Email</label>
