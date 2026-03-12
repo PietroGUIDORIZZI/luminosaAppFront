@@ -1,4 +1,6 @@
 export function AnimatedBackground({ dark }) {
+  if (!dark) return null;
+
   return (
     <video
       autoPlay
@@ -13,9 +15,9 @@ export function AnimatedBackground({ dark }) {
         objectFit: 'cover',
         zIndex: 0,
         pointerEvents: 'none',
-        opacity: dark ? 0.35 : 0.15,
-        filter: dark ? 'brightness(0.7)' : 'brightness(1.1) saturate(0.8)',
-        transition: 'opacity 1s ease, filter 1s ease',
+        opacity: 0.35,
+        filter: 'brightness(0.7)',
+        transition: 'opacity 1s ease',
       }}
     >
       <source src="/nebula.mp4" type="video/mp4" />
