@@ -3,15 +3,20 @@ import { projectsApi } from '../api/projectsApi';
 import { useToast } from '../context/ToastContext';
 
 export function useProjects() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [projects, setProjects]       = useState([]); // árvore
+  const [projectsFlat, setProjectsFlat] = useState([]); // lista plana para seletor
+  const [loading, setLoading]         = useState(false);
   const { toast } = useToast();
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await projectsApi.getAll();
-      setProjects(data);
+      const [tree, flat] = await Promise.all([
+        projectsApi.getAll(),
+        projectsApi.getFlat(),
+      ]);
+      setProjects(tree   ?? []);
+      setProjectsFlat(flat ?? []);
     } catch {
       toast('Erro ao carregar projetos', 'error');
     } finally {
@@ -42,12 +47,9 @@ export function useProjects() {
   }, [load, toast]);
 
   const reorder = useCallback(async (ids) => {
-    try {
-      await projectsApi.reorder(ids);
-    } catch {
-      toast('Erro ao salvar ordem', 'error');
-    }
+    try { await projectsApi.reorder(ids); }
+    catch { toast('Erro ao salvar ordem', 'error'); }
   }, [toast]);
 
-  return { projects, loading, load, save, remove, reorder };
+  return { projects, projectsFlat, loading, load, save, remove, reorder };
 }
